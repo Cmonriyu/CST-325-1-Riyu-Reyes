@@ -8,16 +8,25 @@
         var currentFrameNumber = 0;
         
         class Rectangle{
-            constructor(x, y, color, draw) {
-            this.x = x;
-            this.y = y;
-            this.color = color;
-            this.draw = function(){
-                var ctx = canvas.getContext("2d");
-                ctx.fillStyle = this.color;
-                ctx.fillRect(this.x, this.y, 50, 50);
-                ctx.lineWidth = 2;
-                ctx.strokeRect(this.x, this.y, 50, 50);
+            constructor(x, y, color, draw,) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.draw = function(){
+                    var ctx = canvas.getContext("2d");
+                    ctx.fillStyle = this.color;
+                    ctx.fillRect(this.x, this.y, 50, 50);
+                    ctx.lineWidth = 2;
+                    ctx.strokeRect(this.x, this.y, 50, 50);
+                    }
+
+                this.velocity = {x: 0, y: 0};
+                this.update = function(){
+                    this.velocity.y += 1;
+                    this.y = this.y + this.velocity.y * 0.16;
+                    if (this.y > 350) {
+                        sceneList.splice(sceneList.indexOf(this),1);
+                    }
                 }
             }
         }
@@ -28,8 +37,10 @@
         }            
 
         function updateAndDraw(){
+            var ctx = canvas.getContext("2d");
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             sceneList.push(new Rectangle(Math.floor(Math.random() * 301), Math.floor(Math.random() * 201), `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}`));
-            sceneList.forEach((Rectangle) => Rectangle.draw());
+            sceneList.forEach((Rectangle) => {Rectangle.draw(); Rectangle.update();});
             currentFrameNumber += 1;
             console.log(currentFrameNumber);
             updateStats();
