@@ -114,7 +114,12 @@ class Vector3 {
 
     //----------------------------------------------------------------------------- 
     rescale(newScale) {
-        // todo - Change this vector's length to be newScale
+        var scale = newScale/this.length();
+        if (scale != 0) {
+            this.x *= scale;
+            this.y *= scale;
+            this.z *= scale;
+        }
         return this;
     }
 
@@ -123,26 +128,23 @@ class Vector3 {
         if (!(fromPoint instanceof Vector3) || !(toPoint instanceof Vector3)) {
             console.error("fromTo requires two vectors: 'from' and 'to'");
         }
-        // todo - return the vector that goes from "fromPoint" to "toPoint"
-        //        NOTE - "fromPoint" and "toPoint" should not be altered
-
+        this.x = toPoint.x - fromPoint.x;
+        this.y = toPoint.y - fromPoint.y;
+        this.z = toPoint.z - fromPoint.z;
+        return this;
 
     }
 
     //----------------------------------------------------------------------------- 
     static angle(v1, v2) {
-        // todo - calculate the angle in degrees between vectors v1 and v2. Do NOT
-        //        change any values on the vectors themselves
-        return 0;
-
+        return Math.acos(v1.dot(v2) / (Math.sqrt(v1.dot(v1)) * Math.sqrt(v2.dot(v2)))) * (180/Math.PI);
     }
 
     //----------------------------------------------------------------------------- 
     static project(vectorToProject, otherVector) {
-        // todo - return a vector that points in the same direction as "otherVector"
-        //        but whose length is the projection of "vectorToProject" onto "otherVector"
-        //        NOTE - "vectorToProject" and "otherVector" should NOT be altered (i.e. use clone)
-        //        See "Vector Projection Slides" under "Extras" for more info.
-        return 0;
+        var newVector = otherVector.clone();
+        var angle = Vector3.angle(vectorToProject,otherVector) * (Math.PI/180);
+        newVector = newVector.rescale(Math.cos(angle)*vectorToProject.length());
+        return newVector;
     }
 }
