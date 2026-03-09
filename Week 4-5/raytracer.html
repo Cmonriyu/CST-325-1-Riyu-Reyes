@@ -86,6 +86,9 @@ function setPixelColor(xPixelIndex, yPixelIndex, shadeOfGray /*[0,1]*/) {
 
 // -----------------------------------------------------------------------------
 function updateAndRender(timeElapsed) {
+	var seconds = timeElapsed * 0.001; // convert milliseconds to seconds
+	lightPos.x = Math.cos(seconds) * 0.5; // radius of 0.5
+	lightPos.z = Math.sin(seconds) * 0.5;
 	const lightposition = new Vector3(1,0,0);
 	for (let yPixelIndex = 0; yPixelIndex < pixelsDown; ++yPixelIndex) {
 		for (let xPixelIndex = 0; xPixelIndex < pixelsAcross; ++xPixelIndex) {
